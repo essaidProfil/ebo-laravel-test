@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
-use App\Models\CateCategorygory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -90,5 +91,29 @@ class ProductController extends Controller
     {
         $product->load('categories');
         return response()->json($product);
+    }
+
+    /**
+     * Liste les produits par catégorie.
+     *
+     * @param  int  $categoryId
+     * @return JsonResponse
+     */
+    public function getProductsByCategoryAction($categoryId)
+    {
+        // Vérifiez si la catégorie existe
+        $category = Category::find($categoryId);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        // Récupérer les produits de cette catégorie
+        $products = $category->products;
+
+        return response()->json([
+            'category' => $category->name,
+            'products' => $products,
+        ], 200);
     }
 }

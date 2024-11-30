@@ -24,7 +24,7 @@ services:
             - ./data/database:/var/lib/mysql
             - ./data/database:/var/log/mysql
         environment:
-            - MYSQL_DATABASE=laravelcommerce
+            - MYSQL_DATABASE=ebodb
             - MYSQL_ROOT_PASSWORD=password
 
     phpmyadmin:
@@ -47,12 +47,12 @@ services:
             - "db"
 
     app:
-        container_name: laravelcommerce
+        container_name: laravel-store
         build:
             context: ./php-fpm
             dockerfile: Dockerfile
         volumes:
             - ./laravel-commerce:/var/www
         ports:
-            - "9000:9000"
+            - "9090:9090"
         working_dir: /var/www

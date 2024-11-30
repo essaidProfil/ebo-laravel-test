@@ -9,4 +9,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/products', [ProductController::class, 'postProductAction']); // Ajouter des produits
     Route::put('/products/{product}', [ProductController::class, 'putProductAction']);
     Route::delete('/products/{product}', [ProductController::class, 'deleteProductAction']);
+
+    // Get products by category
+    Route::get('/categories/{categoryId}/products', [ProductController::class, 'getProductsByCategoryAction']);
 });
