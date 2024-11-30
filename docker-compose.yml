@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - ./laravel-commerce:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+        depends_on:
+            - app
+            - db
+
+    db:
+        image: mysql
+        container_name: database
+        ports:
+            - "3306:3306"
+        restart: always
+        volumes:
+            - ./data/database:/var/lib/mysql
+            - ./data/database:/var/log/mysql
+        environment:
+            - MYSQL_DATABASE=laravelcommerce
+            - MYSQL_ROOT_PASSWORD=password
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        ports:
+            - "8081:80"
+        depends_on:
+            - db
+        restart: unless-stopped
+        environment:
+            - UPLOAD_LIMIT=2G
+            - SESSION_TIMEOUT=60000
+            - PMA_ARBITRARY=1
+        healthcheck:
+            test: "curl -f localhost/"
+            interval: 1800s
+            retries: 2
+        links:
+            - "db"
+
+    app:
+        container_name: laravelcommerce
+        build:
+            context: ./php-fpm
+            dockerfile: Dockerfile
+        volumes:
+            - ./laravel-commerce:/var/www
+        ports:
+            - "9000:9000"
+        working_dir: /var/www
