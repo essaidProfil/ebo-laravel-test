@@ -169,7 +169,7 @@ Pour installer Laravel, veuillez suivre les étapes suivantes :
 3. **Outils**:
    - Si vous souhaitez afficher les ROUTEs disponible 
    ```bash
-   docker-compose exec app php artisan route:list
+   php artisan route:list
    ```
    Ou bien
    ```bash
@@ -177,7 +177,7 @@ Pour installer Laravel, veuillez suivre les étapes suivantes :
    ```
    - Pour supprimer la cache ROUTE
    ```bash
-   docker-compose exec app php artisan route:clear
+    php artisan route:clear
    ```
    Ou bien
    ```bash
