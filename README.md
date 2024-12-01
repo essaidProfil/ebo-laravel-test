@@ -94,8 +94,11 @@ Accédez à [http://localhost:8080](http://localhost:8080) pour voir l'applicati
 
 ### **PhpMyAdmin**
 Accédez à [http://localhost:8081](http://localhost:8081) pour voir PhpMyAdmin. Utilisez les identifiants suivants :
+- **Serveur** : `db`
 - **Nom d'utilisateur** : `root`
 - **Mot de passe** : `password`
+
+- **Base de données** : `ebodb`
 
 ### **API Endpoints**
 Vous pouvez tester les endpoints API avec des outils comme Postman ou cURL. Consultez le fichier `routes/api.php` pour voir les endpoints disponibles.
