@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductTest extends TestCase
@@ -13,6 +14,9 @@ class ProductTest extends TestCase
     /** @test */
     public function itCanCreateProduct()
     {
+        // Create a user and authenticate with Sanctum
+        $user = User::factory()->create();
+
         $data = [
             'name' => 'Test Product',
             'description' => 'This is a test product',
@@ -21,7 +25,9 @@ class ProductTest extends TestCase
             'category' => ['1']
         ];
 
-        $response = $this->postJson('/api/products', $data);
+        // Authenticate user using Sanctum
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson('/api/product', $data);
 
         $response->assertStatus(201)
             ->assertJson(['message' => 'Le produit a été créé avec succès']);
@@ -32,6 +38,9 @@ class ProductTest extends TestCase
     /** @test */
     public function itCanUpdateProduct()
     {
+        // Create a user and authenticate with Sanctum
+        $user = User::factory()->create();
+
         $product = Product::factory()->create();
 
         $updatedData = [
@@ -39,7 +48,9 @@ class ProductTest extends TestCase
             'price' => 20.00,
         ];
 
-        $response = $this->putJson("/api/products/{$product->id}", $updatedData);
+        // Authenticate user using Sanctum
+        $response = $this->actingAs($user, 'sanctum')
+            ->putJson("/api/product/{$product->id}", $updatedData);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Le produit a été mis à jour avec succès']);
@@ -50,9 +61,14 @@ class ProductTest extends TestCase
     /** @test */
     public function itCanDeleteProduct()
     {
+        // Create a user and authenticate with Sanctum
+        $user = User::factory()->create();
+
         $product = Product::factory()->create();
 
-        $response = $this->deleteJson("/api/products/{$product->id}");
+        // Authenticate user using Sanctum
+        $response = $this->actingAs($user, 'sanctum')
+            ->deleteJson("/api/product/{$product->id}");
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Le produit a été supprimé avec succès']);

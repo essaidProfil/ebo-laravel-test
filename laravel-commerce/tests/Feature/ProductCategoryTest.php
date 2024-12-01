@@ -5,18 +5,23 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function it_can_attach_categories_to_a_product()
+    public function itCanAttachCategoriesToProduct()
     {
+        // Create a user and authenticate using Sanctum
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum'); // Authenticate the user
+
         $product = Product::factory()->create();
         $categories = Category::factory()->count(2)->create();
 
+        // Attach categories to the product
         $response = $this->postJson("/api/products/{$product->id}/categories", [
             'categories' => $categories->pluck('id')->toArray(),
         ]);
@@ -27,13 +32,16 @@ class ProductCategoryTest extends TestCase
         $this->assertCount(2, $product->categories);
     }
 
-    /** @test */
-    public function it_can_list_products_by_category()
+    public function itCanListProductsByCategory()
     {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum'); // Authentifier l'utilisateur
+
         $category = Category::factory()->create();
         $products = Product::factory()->count(3)->create();
         $category->products()->attach($products->pluck('id'));
 
+        // Lister les produits par categorie
         $response = $this->getJson("/api/categories/{$category->id}/products");
 
         $response->assertStatus(200)

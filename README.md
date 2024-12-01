@@ -17,7 +17,7 @@ Avant de déployer cette application, assurez-vous d'avoir les éléments suivan
 
 ### **1. Installation de Docker**
 - La plateforme Docker peut être installée sur Windows, Mac ou Linux à partir de leur site web.
-- Install [Docker](https://docs.docker.com/install/).  
+- Install [Docker](https://docs.docker.com/install/).
 - Install [Docker Compose](https://docs.docker.com/compose/install/).
 
 Une fois installée, elle s'exécutera en tant que processus en arrière-plan, et les versions peuvent être vérifiées en ligne de commande :
@@ -149,3 +149,43 @@ N'hésitez pas à forker le dépôt et à soumettre une pull request pour des am
 
 ## **Licence**
 Ce projet est sous licence [MIT](https://opensource.org/licenses/MIT).
+
+---
+
+## **Instructions de déploiement Laravel**
+Pour installer Laravel, veuillez suivre les étapes suivantes :
+
+1. **Créer la base de données et les tables** :  
+   Pour créer la base de données et les tables nécessaires, exécutez la commande suivante dans votre terminal :
+   ```bash
+   php artisan migrate
+   ```
+   ou bien 
+   ```bash
+   docker-compose exec app php artisan migrate
+   ```
+
+2. **Générer des données de test (Optionnel)** :  
+   Si vous souhaitez générer des données de test (fake data) pour tester l'application, exécutez :
+   ```bash
+   docker-compose exec app php artisan migrate:fresh --seed
+   ```
+
+3. **Outils**:
+   - Si vous souhaitez afficher les ROUTEs disponible 
+   ```bash
+   docker-compose exec app php artisan route:list
+   ```
+   Ou bien
+   ```bash
+   docker-compose exec app php artisan route:list
+   ```
+   - Pour supprimer la cache ROUTE
+   ```bash
+   docker-compose exec app php artisan route:clear
+   ```
+   Ou bien
+   ```bash
+   docker-compose exec app php artisan route:clear
+   ```
+      Vous pouvez accéder à l'application via l'adresse `http://localhost:8080`.
