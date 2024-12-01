@@ -16,11 +16,11 @@ Cette application Laravel est containerisée avec Docker pour une expérience de
 Avant de déployer cette application, assurez-vous d'avoir les éléments suivants installés sur votre système :
 
 ### **1. Installation de Docker**
-- **Mac** : Suivez le [guide officiel pour Mac](https://docs.docker.com/desktop/install/mac/).
-- **Windows** : Suivez le [guide officiel pour Windows](https://docs.docker.com/desktop/install/windows/).
-- **Linux** : Suivez le [guide officiel pour Linux](https://docs.docker.com/desktop/install/linux/).
+- La plateforme Docker peut être installée sur Windows, Mac ou Linux à partir de leur site web.
+- Install [Docker](https://docs.docker.com/install/).  
+- Install [Docker Compose](https://docs.docker.com/compose/install/).
 
-Pour vérifier que Docker est installé, exécutez :
+Une fois installée, elle s'exécutera en tant que processus en arrière-plan, et les versions peuvent être vérifiées en ligne de commande :
 
 ```bash
 docker --version
