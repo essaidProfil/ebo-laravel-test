@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\ApiKeyMiddleware;
+use App\Http\Middleware\RequestStatMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -44,6 +45,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api', 'throttle:200,.10',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\JsonMiddleware::class,
+            'auth:sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ],
     ];
 
@@ -70,5 +72,12 @@ class Kernel extends HttpKernel
         'apiKey'             => ApiKeyMiddleware::class,
         'localization'       => \App\Http\Middleware\localization::class,
         'installed' => \App\Http\Middleware\Installed::class,
+    ];
+
+    /**
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'log.requests' => RequestStatMiddleware::class,
     ];
 }

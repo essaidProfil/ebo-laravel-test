@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->unsignedTinyInteger('user_role')->default(Role::ADMIN);
+            $table->unsignedTinyInteger('user_role')->default(Role::CUSTOMER);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

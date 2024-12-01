@@ -69,6 +69,7 @@ class ProductController extends Controller
         }
 
         // Si la validation passe creer le produit
+        $validated = $validator->validated();
         $product = Product::create([
             'name' => $validated['name'],
             'price' => $validated['price'],
@@ -88,6 +89,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'sometimes|required|max:255',
+            'description' => 'sometimes|required|max:355',
             'price' => 'sometimes|required|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
             'categories' => 'nullable|array',
