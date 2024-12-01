@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/products', [ProductController::class, 'getProductsAction']); // Récuperer tous les products
-    Route::get('/products/{product}', [ProductController::class, 'getProductAction']); // Récuperer un produi par identifiant
-    Route::post('/products', [ProductController::class, 'postProductAction']); // Ajouter des produits
+
+    // Routes API
+    Route::get('/products', [ProductController::class, 'getProductsAction']);
+    Route::get('/products/{product}', [ProductController::class, 'getProductAction']);
+    Route::post('/products', [ProductController::class, 'postProductAction']);
     Route::put('/products/{product}', [ProductController::class, 'putProductAction']);
     Route::delete('/products/{product}', [ProductController::class, 'deleteProductAction']);
 
-    // Get products by category
     Route::get('/categories/{categoryId}/products', [ProductController::class, 'getProductsByCategoryAction']);
-});

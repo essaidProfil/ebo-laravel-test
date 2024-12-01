@@ -1,41 +1,32 @@
-FROM php:8.2.11-fpm
+FROM php:8.1-fpm
 
-# Install composer
-RUN echo "\e[1;33mInstall COMPOSER\e[0m"
-RUN cd /tmp \
-    && curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
-
-RUN docker-php-ext-install pdo pdo_mysql
-
-RUN apt-get update
-
-# Install useful tools
-RUN apt-get -y install apt-utils nano wget dialog vim
-
-# Update and install important libraries
-RUN echo "\e[1;33mInstall important libraries\e[0m"
-RUN apt-get -qq update && apt-get -qq -y install --fix-missing \
-    apt-utils \
-    build-essential \
+# Installer les extensions nécessaires
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
     git \
     curl \
-    libcurl4 \
-    libcurl4-openssl-dev \
-    zlib1g-dev \
-    libzip-dev \
-    zip \
-    wget \
-    unzip \
-    libbz2-dev \
-    locales \
-    libmcrypt-dev \
-    libicu-dev \
-    libonig-dev \
-    libxml2-dev
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# install latest version of composer
-#COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Installer Composer
+COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-# clean space
-RUN rm -rf /var/lib/apt/lists/*
+# Configurer le dossier de travail
+WORKDIR /var/www
+
+# Copier les fichiers de l'application Laravel
+COPY . /var/www
+
+# Installer les dépendances Laravel
+RUN composer install
+
+# Configurer les permissions
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 775 /var/www/storage \
+    && chmod -R 775 /var/www/bootstrap/cache
+
+# Commande par défaut
+CMD ["php-fpm"]

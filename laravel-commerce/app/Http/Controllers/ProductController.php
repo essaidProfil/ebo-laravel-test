@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -17,7 +18,8 @@ class ProductController extends Controller
         // Recherche par nom ou description
         if ($request->has('search')) {
             $query->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('description', 'like', '%' . $request->search . '%');
+                ->orWhere('description', 'like', '%' . $request->search . '%')
+                ->orWhere('price', '=', $request->search); // Exact match for price//
         }
 
         // Filtrer par catégorie
@@ -39,14 +41,34 @@ class ProductController extends Controller
     // Créer un produit
     public function postProductAction(Request $request)
     {
-        $validated = $request->validate([
+        // Custom validation rules and messages
+        $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
+        ], [
+            'name.required' => 'Le nom du produit est un champ requis !',
+            'name.max' => 'Le nom du produit ne doit pas depasser les 255 characters !',
+            'price.required' => 'Le champ prix est requis !',
+            'price.numeric' => 'Le prix doit contenir des chiffres uniquement !',
+            'price.min' => 'Le prix ne doit pas être en négatif !',
+            'stock.integer' => 'Le champ stock doit contenir des chiffres uniquement !',
+            'stock.min' => 'Le champ stock doit contenir QTT 1 et plus !',
+            'categories.required' => 'Une categorie est requise au minimum',
+            'categories.array' => 'Les categories doivent être mises dans les crochet []',
+            'categories.*.exists' => 'La category doit être enregistrer dans la base de données !',
         ]);
 
+        // Verifier si les validations ne passent pas
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422); // Unprocessable Entity response
+        }
+
+        // Si la validation passe creer le produit
         $product = Product::create([
             'name' => $validated['name'],
             'price' => $validated['price'],
@@ -54,8 +76,10 @@ class ProductController extends Controller
             'description' => $request->input('description', null),
         ]);
 
+        // Attacher les categories au produit
         $product->categories()->attach($validated['categories']);
 
+        // Retourner une reponse de validation avec succes
         return response()->json($product, 201);
     }
 
@@ -82,8 +106,13 @@ class ProductController extends Controller
     // Supprimer un produit
     public function deleteProductAction(Product $product)
     {
+        $productName = $product->name;  // Get the product name
         $product->delete();
-        return response()->json(['message' => 'Le produit a été supprimé avec succes !'], 204);
+
+        // Return a JSON response with the product name and success message
+        return response()->json([
+            'message' => 'Le produit ' . $productName . ' a été supprimé avec succès !'
+        ], 200);
     }
 
     // Voir un produit spécifique
