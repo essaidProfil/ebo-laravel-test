@@ -142,16 +142,6 @@ docker-compose down
 
 ---
 
-## **Contributions**
-N'hésitez pas à forker le dépôt et à soumettre une pull request pour des améliorations ou des corrections.
-
----
-
-## **Licence**
-Ce projet est sous licence [MIT](https://opensource.org/licenses/MIT).
-
----
-
 ## **Instructions de déploiement Laravel**
 Pour installer Laravel, veuillez suivre les étapes suivantes :
 
@@ -189,3 +179,15 @@ Pour installer Laravel, veuillez suivre les étapes suivantes :
    docker-compose exec app php artisan route:clear
    ```
       Vous pouvez accéder à l'application via l'adresse `http://localhost:8080`.
+
+---
+
+## **Contributions**
+N'hésitez pas à forker le dépôt et à soumettre une pull request pour des améliorations ou des corrections.
+
+---
+
+## **Licence**
+Ce projet est sous licence [MIT](https://opensource.org/licenses/MIT).
+
+---
