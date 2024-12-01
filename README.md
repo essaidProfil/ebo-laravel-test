@@ -11,6 +11,8 @@ Cette application Laravel est containerisée avec Docker pour une expérience de
 - Fonctions CRUD avec recherche et filtrage avancés
 
 ---
+- Le fichier collection des API's pour POSTMAN est disponible sur ce [lien](https://drive.google.com/file/d/1Lvy-NlTthzuAsnUd8qM0segbWIZ-nCH_/view?usp=drive_link).
+---
 
 ## **Prérequis**
 Avant de déployer cette application, assurez-vous d'avoir les éléments suivants installés sur votre système :
